@@ -1,3 +1,4 @@
+import petbanner from "../assets/petbanner.png";
 const PromoBanner = () => {
   return (
     // <section className="font-['Comic_Sans_MS'] w-full flex justify-center px-4 py-24 bg-[#fffaf3]">
@@ -46,7 +47,7 @@ const PromoBanner = () => {
       <div
         className="relative w-full max-w-6xl rounded-[60px] overflow-hidden bg-cover bg-center"
         style={{
-          backgroundImage: "url('/src/assets/petbanner.png')",
+          backgroundImage: `url(${petbanner})`,
         }}
       >
         {/* Gradient overlay */}

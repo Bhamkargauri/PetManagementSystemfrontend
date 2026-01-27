@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import dogImg from "../assets/dog.png";
 import Api from "../services/Api";
 
 const Hero = () => {
@@ -129,7 +130,7 @@ const Hero = () => {
           </div>
 
           <img
-            src="src\assets\dog.png"
+            src={dogImg}
             alt="Happy Beagle Dog"
             className="w-full h-auto object-cover drop-shadow-2xl"
           />
