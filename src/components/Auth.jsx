@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 import { loginUser, signUpUser } from "./../services/PetService";
 import Navbar from "./Navbar";
 
@@ -14,13 +14,26 @@ const Auth = () => {
     e.preventDefault();
     try {
       const data = await signUpUser({ name, email, password });
-      toast.success(`SignUp Successful! Welcome, ${data.name}`);
+      // toast.success(`SignUp Successful! Welcome, ${data.name}`);
+      Swal.fire({
+        icon: "success",
+        title: "Sign Up Successful!",
+        text: `Welcome, ${data.name}`,
+        confirmButtonColor: "#3085d6",
+      });
       console.log("SignUp Response:", data);
       setName("");
       setEmail("");
       setPassword("");
     } catch (error) {
-      toast.error(error.response?.data?.error || "Sign Up failed");
+      // toast.error(error.response?.data?.error || "Sign Up failed");
+      Swal.fire({
+        icon: "error",
+        title: "Sign Up Failed",
+        text: error.response?.data?.error || "Sign Up failed",
+        confirmButtonColor: "#d33",
+      });
+
       console.log(error.response || error.message);
     }
   };
@@ -29,12 +42,28 @@ const Auth = () => {
     e.preventDefault();
     try {
       const data = await loginUser({ email, password });
-      toast.success(`Login Successfull welcome, ${data.name}`);
+      // toast.success(`Login Successfull welcome, ${data.name}`);
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful!",
+        text: `Welcome, ${data.name}`,
+        timer: 2000,
+        showConfirmButton: false,
+        confirmButtonColor: "#3085d6",
+      });
       console.log("Login Response:", data);
       setEmail("");
       setPassword("");
     } catch (error) {
-      toast.error(error.response?.data?.error || "Login Failed");
+      // toast.error(error.response?.data?.error || "Login Failed");
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: error.response?.data?.error || "Login Failed",
+        timer: 2000,
+        showConfirmButton: false,
+        confirmButtonColor: "#d33",
+      });
       console.log(error.response || error.message);
     }
   };
@@ -72,6 +101,7 @@ const Auth = () => {
                   <input
                     type="text"
                     placeholder="Username"
+                    required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full bg-white/20 border border-white/10 rounded-2xl py-2 px-4
@@ -84,6 +114,7 @@ const Auth = () => {
                   type="email"
                   placeholder="Email"
                   value={email}
+                  required
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-white/20 border border-white/10 rounded-2xl py-2 px-4
             placeholder-white/70 text-white outline-none
@@ -94,6 +125,7 @@ const Auth = () => {
                   type="password"
                   placeholder="Password"
                   value={password}
+                  required
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-white/20 border border-white/10 rounded-2xl py-2 px-4
             placeholder-white/70 text-white outline-none

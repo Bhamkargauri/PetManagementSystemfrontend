@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import dogImg from "../assets/dog.png";
 import Api from "../services/Api";
 
@@ -13,19 +13,35 @@ const Hero = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("petName", petName);
-    formData.append("breed", breed);
-    formData.append("age", age);
-    formData.append("price", price);
-    formData.append("quantity", quantity);
-    formData.append("file", imagePath);
+    // const formData = new FormData();
+    // formData.append("petName", petName);
+    // formData.append("breed", breed);
+    // formData.append("age", age);
+    // formData.append("price", price);
+    // formData.append("quantity", quantity);
+    // formData.append("file", imagePath);
+
+    const petData = {
+      petName,
+      breed,
+      age: Number(age),
+      price: Number(price),
+      quantity: Number(quantity),
+      imagePath,
+    };
 
     try {
-      await Api.post("/pets/create", formData, {
-        headers: { "Content-Type": "application/json" },
+      await Api.post("/pets/create", petData);
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Pet added successfully",
+        timer: 2000,
+        showConfirmButton: false,
+        confirmButtonColor: "#3085d6",
       });
-      toast.success("Pet added successfully!");
+
+      // toast.success("Pet added successfully!");
       console.log("Pet added successfully!");
       setPetName("");
       setBreed("");
@@ -33,7 +49,15 @@ const Hero = () => {
       setQuantity("");
       setPrice("");
     } catch {
-      toast.error("Error adding Pet");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        timer: 2000,
+        showConfirmButton: false,
+        text: "Error adding pet",
+        confirmButtonColor: "#d33",
+      });
+      // toast.error("Error adding Pet");
     }
   };
   // px-6 py-12
@@ -58,6 +82,7 @@ const Hero = () => {
               type="text"
               placeholder="Pet Name"
               value={petName}
+              required
               onChange={(e) => setPetName(e.target.value)}
               className="w-full bg-white/20 border border-white/10 rounded-2xl py-2 px-4 placeholder-white/70 text-white focus:ring-2 focus:ring-white/40 outline-none transition-all"
             />
@@ -66,6 +91,7 @@ const Hero = () => {
               type="text"
               placeholder="Breed"
               value={breed}
+              required
               onChange={(e) => setBreed(e.target.value)}
               className="w-full bg-white/20 border border-white/10 rounded-2xl py-2 px-4 placeholder-white/70 text-white focus:ring-2 focus:ring-white/40 outline-none transition-all"
             />
@@ -77,6 +103,7 @@ const Hero = () => {
               type="number"
               placeholder="Age"
               value={age}
+              required
               onChange={(e) => setAge(e.target.value)}
               className="w-full bg-white/20 border border-white/10 rounded-2xl py-2 px-4 placeholder-white/70 text-white focus:ring-2 focus:ring-white/40 outline-none transition-all"
             />
@@ -85,6 +112,7 @@ const Hero = () => {
               type="number"
               placeholder="Price"
               value={price}
+              required
               onChange={(e) => setPrice(e.target.value)}
               className="w-full bg-white/20 border border-white/10 rounded-2xl py-2 px-4 placeholder-white/70 text-white focus:ring-2 focus:ring-white/40 outline-none transition-all"
             />
@@ -95,18 +123,48 @@ const Hero = () => {
             type="number"
             placeholder="Quantity"
             value={quantity}
+            required
             onChange={(e) => setQuantity(e.target.value)}
             className="w-full bg-white/20 border border-white/10 rounded-2xl py-2 px-4 placeholder-white/70 text-white focus:ring-2 focus:ring-white/40 outline-none transition-all"
           />
 
           {/* Image Upload */}
-          <div className="relative">
+          {/* <div className="relative">
             <input
               type="file"
               accept="image/*"
               onChange={(e) => setImagePath(e.target.files[0])}
               className="w-full bg-white/20 border border-white/10 rounded-2xl py-2 px-4 text-white file:bg-white file:text-orange-500 file:border-0 file:px-4 file:py-2 file:rounded-xl file:font-bold cursor-pointer"
             />
+          </div> */}
+
+          <div className="relative">
+            <select
+              value={imagePath}
+              required
+              onChange={(e) => setImagePath(e.target.value)}
+              className="w-full bg-white/20 border border-white/10 rounded-2xl py-2 px-4 text-white focus:ring-2 focus:ring-white/40 outline-none transition-all"
+            >
+              <option value="" className="text-black">
+                Select Pet Category
+              </option>
+
+              <option value="dog1.jpg" className="text-black">
+                dog
+              </option>
+              <option value="rabbit.jpg" className="text-black">
+                rabbit
+              </option>
+              <option value="cat1.jpg" className="text-black">
+                cat
+              </option>
+              <option value="pig.jpg" className="text-black">
+                piggy
+              </option>
+              <option value="parrot.jpg" className="text-black">
+                parrot
+              </option>
+            </select>
           </div>
 
           {/* Submit Button */}
